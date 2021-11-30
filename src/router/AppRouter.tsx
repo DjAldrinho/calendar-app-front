@@ -1,29 +1,28 @@
 import React from "react";
-import {BrowserRouter as Router, Redirect, Switch} from 'react-router-dom';
-import CalendarComponent from "../components/calendar/CalendarComponent";
-import {PrivateRouter} from "./PrivateRouter";
-import AuthRouter from "./AuthRouter";
-import {PublicRouter} from "./PublicRouter";
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import PublicRoute from "./PublicRoute";
+import AuthRoute from "./AuthRoute";
+import PrivateRoute from "./PrivateRoute";
+import CalendarRoute from "./CalendarRoute";
 
 
 function AppRouter() {
     return (
-        <Router>
-            <Switch>
-                <PublicRouter
-                    path="/auth"
-                    component={AuthRouter}/>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/auth/*" element={
+                    <PublicRoute>
+                        <AuthRoute/>
+                    </PublicRoute>
+                }/>
 
-                <PrivateRouter
-                    exact
-                    path="/"
-                    component={CalendarComponent}
-                />
-
-                <Redirect to="/auth/login"/>
-
-            </Switch>
-        </Router>
+                <Route path="/*" element={
+                    <PrivateRoute>
+                        <CalendarRoute/>
+                    </PrivateRoute>
+                }/>
+            </Routes>
+        </BrowserRouter>
     )
 }
 
